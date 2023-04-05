@@ -1,0 +1,611 @@
+{
+	"info": {
+		"_postman_id": "df82a395-aefd-472e-a77f-5bbefa801939",
+		"name": "Student_api_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26133503"
+	},
+	"item": [
+		{
+			"name": "Get_Students_Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//status code\r",
+							"\r",
+							"pm.test(\"Status code is 200\",()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// data type testing\r",
+							"\r",
+							"pm.test(\"Test Data Type\",()=>{\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"    pm.expect(jsonData[1].id).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData[1].first_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData[1].middle_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData[1].last_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData[1].date_of_birth).to.be.a(\"string\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//create base url\r",
+							"pm.environment.set(\"baseURL\", \"https://thetestingworldapi.com\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/studentsDetails",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"//console.log(jsonData.id);\r",
+							"pm.environment.set(\"env_stu_id\",jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//random variable generator\r",
+							"\r",
+							"var firstName=pm.variables.replaceIn(\"{{$randomNamePrefix}}\");\r",
+							"var middleName =pm.variables.replaceIn(\"{{$randomFirstName}}\");\r",
+							"var lastName =pm.variables.replaceIn(\"{{$randomFullName}}\");\r",
+							"var dateOfBirth =pm.variables.replaceIn(\"{{$randomDatePast}}\")\r",
+							"\r",
+							"pm.collectionVariables.set(\"firstName\",firstName);\r",
+							"pm.collectionVariables.set(\"middleName\", middleName);\r",
+							"pm.collectionVariables.set(\"lastName\",lastName);\r",
+							"pm.collectionVariables.set(\"dateOfBirth\",dateOfBirth);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"first_name\": \"{{firstName}}\", \r\n     \"middle_name\": \"{{middleName}}\", \r\n     \"last_name\": \"{{lastName}}\",\r\n    \"date_of_birth\": \"{{dateOfBirth}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/studentsDetails/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Specific_Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData= pm.response.json();\r",
+							"\r",
+							"pm.test(\"Student field validation\", ()=>{\r",
+							"    pm.expect(jsonData.data.id).to.eql(pm.environment.get(\"env_stu_id\"));\r",
+							"    pm.expect(jsonData.data.first_name).to.eql(pm.collectionVariables.get('firstName'));\r",
+							"    pm.expect(jsonData.data.middle_name).to.eql(pm.collectionVariables.get('middleName'));\r",
+							"    pm.expect(jsonData.data.last_name).to.eql(pm.collectionVariables.get('lastName'));\r",
+							"    pm.expect(jsonData.data.date_of_birth).to.eql(pm.collectionVariables.get('dateOfBirth'))\r",
+							"})\r",
+							"\r",
+							"// data type testing\r",
+							"\r",
+							"pm.test(\"Test Data Type\",()=>{\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData.data.first_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.data.middle_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.data.last_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.data.date_of_birth).to.be.a(\"string\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/studentsDetails/{{env_stu_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{env_stu_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Technical_Skills",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// random Technical data generate\r",
+							"var language= ['Bangla','Englilsh','Hindi','Franch','Spanish']\r",
+							"var yearOfExp= ['2', '3', '5', '6', '4']\r",
+							"var languageOne= language[Math.floor(Math.random()*language.length)];\r",
+							"var languageTwo= language[Math.floor(Math.random()*language.length)];\r",
+							"var yearOfExps= yearOfExp[Math.floor(Math.random()*yearOfExp.length)];\r",
+							"\r",
+							"//set as a collection variable\r",
+							"pm.collectionVariables.set('languageOne',languageOne);\r",
+							"pm.collectionVariables.set('languageTwo',languageTwo);\r",
+							"pm.collectionVariables.set('yearOfExps',yearOfExps);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\": 1,\r\n\"language\": [\r\n\"{{languageOne}}\",\r\n\"{{languageTwo}}\"\r\n],\r\n\"yearexp\": \"{{yearOfExps}}\",\r\n\"lastused\": \"3\",\r\n\"st_id\": \"{{env_stu_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/technicalskills",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"technicalskills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Students_Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\",()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//response message \r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"//console.log(jsonData.msg)\r",
+							"pm.test(\"Response Body Message\", ()=>{\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Add  data success\");\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//random address generate\r",
+							"\r",
+							"var houseNumber = pm.variables.replaceIn(\"{{$randomStreetAddress}}\");\r",
+							"var city = pm.variables.replaceIn(\"{{$randomCity}}\");\r",
+							"var state = pm.variables.replaceIn(\"{{$randomStreetName}}\");\r",
+							"var country = pm.variables.replaceIn(\"{{$randomCountry}}\");\r",
+							"var mobileOne = pm.variables.replaceIn(\"{{$randomPhoneNumber}}\")\r",
+							"var mobileTwo = pm.variables.replaceIn(\"{{$randomPhoneNumberExt}}\")\r",
+							"\r",
+							"var stdCode = [\"std_10\", \"std_20\", \"std_30\", \"std_40\", \"std_50\"];\r",
+							"var stdCodeOne = stdCode[Math.floor(Math.random()*stdCode.length)];\r",
+							"var stdCodeTwo = stdCode[Math.floor(Math.random()*stdCode.length)];\r",
+							"\r",
+							"\r",
+							"//set as a collection variable\r",
+							"pm.collectionVariables.set(\"houseNumber\",houseNumber);\r",
+							"pm.collectionVariables.set(\"city\",city);\r",
+							"pm.collectionVariables.set(\"state\",state);\r",
+							"pm.collectionVariables.set(\"country\",country);\r",
+							"pm.collectionVariables.set(\"mobileOne\",mobileOne);\r",
+							"pm.collectionVariables.set(\"mobileTwo\",mobileTwo);\r",
+							"pm.collectionVariables.set(\"stdCodeOne\",stdCodeOne);\r",
+							"pm.collectionVariables.set(\"stdCodeTwo\",stdCodeTwo);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"Permanent_Address\": \r\n    { \"House_Number\": \"{{houseNumber}}\",\"City\": \"{{city}}\", \"State\": \"{{state}}\", \"Country\": \"{{country}}\",\r\n    \"PhoneNumber\": [\r\n            { \r\n                \"Std_Code\": \"{{stdCodeOne}}\",\"Home\": \"{{city}}\", \"Mobile\": \"{{mobileOne}}\"\r\n            },\r\n            { \r\n                \"Std_Code\": \"{{stdCodeTwo}}\",\"Home\": \"{{city}}\", \"Mobile\": \"{{mobileOne}}\"\r\n            }\r\n    ]\r\n    },\r\n    \"stId\": \"{{env_stu_id}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/addresses",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Final_Students_Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//status code validation\r",
+							"\r",
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Field validation\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Test Final Students field\", ()=>{\r",
+							"   // pm.expect(jsonData.data.TechnicalDetails[0].language[0]).to.eql(pm.collectionVariables.get(\"languageOne\"));\r",
+							"    pm.expect(jsonData.data.TechnicalDetails[0].language).to.have.members([pm.collectionVariables.get(\"languageOne\"),pm.collectionVariables.get('languageTwo')]);\r",
+							"    pm.expect(jsonData.data.TechnicalDetails[0].yearexp).to.eql(pm.collectionVariables.get('yearOfExps'));\r",
+							"    pm.expect(jsonData.data.Address[0].Permanent_Address.House_Number).to.eql(pm.collectionVariables.get('houseNumber'));\r",
+							"    pm.expect(jsonData.data.Address[0].Permanent_Address.City).to.eql(pm.collectionVariables.get('city'));\r",
+							"    pm.expect(jsonData.data.Address[0].Permanent_Address.Country).to.eql(pm.collectionVariables.get('country'));\r",
+							"    pm.expect(jsonData.data.Address[0].Permanent_Address.PhoneNumber[0].Mobile).to.eql(pm.collectionVariables.get('mobileOne'));\r",
+							"    pm.expect(jsonData.data.Address[0].Current_Address).to.eql(null);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"//Schema validation\r",
+							"var schema ={\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"status\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"first_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"middle_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"last_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"date_of_birth\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"TechnicalDetails\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"language\": {\r",
+							"                  \"type\": \"array\",\r",
+							"                  \"items\": [\r",
+							"                    {\r",
+							"                      \"type\": \"string\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                      \"type\": \"string\"\r",
+							"                    }\r",
+							"                  ]\r",
+							"                },\r",
+							"                \"yearexp\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"lastused\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"st_id\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"language\",\r",
+							"                \"yearexp\",\r",
+							"                \"lastused\",\r",
+							"                \"st_id\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"Address\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"Permanent_Address\": {\r",
+							"                  \"type\": \"object\",\r",
+							"                  \"properties\": {\r",
+							"                    \"House_Number\": {\r",
+							"                      \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"City\": {\r",
+							"                      \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"State\": {\r",
+							"                      \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"Country\": {\r",
+							"                      \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"PhoneNumber\": {\r",
+							"                      \"type\": \"array\",\r",
+							"                      \"items\": [\r",
+							"                        {\r",
+							"                          \"type\": \"object\",\r",
+							"                          \"properties\": {\r",
+							"                            \"Std_Code\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            },\r",
+							"                            \"Home\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            },\r",
+							"                            \"Mobile\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            }\r",
+							"                          },\r",
+							"                          \"required\": [\r",
+							"                            \"Std_Code\",\r",
+							"                            \"Home\",\r",
+							"                            \"Mobile\"\r",
+							"                          ]\r",
+							"                        },\r",
+							"                        {\r",
+							"                          \"type\": \"object\",\r",
+							"                          \"properties\": {\r",
+							"                            \"Std_Code\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            },\r",
+							"                            \"Home\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            },\r",
+							"                            \"Mobile\": {\r",
+							"                              \"type\": \"string\"\r",
+							"                            }\r",
+							"                          },\r",
+							"                          \"required\": [\r",
+							"                            \"Std_Code\",\r",
+							"                            \"Home\",\r",
+							"                            \"Mobile\"\r",
+							"                          ]\r",
+							"                        }\r",
+							"                      ]\r",
+							"                    }\r",
+							"                  },\r",
+							"                  \"required\": [\r",
+							"                    \"House_Number\",\r",
+							"                    \"City\",\r",
+							"                    \"State\",\r",
+							"                    \"Country\",\r",
+							"                    \"PhoneNumber\"\r",
+							"                  ]\r",
+							"                },\r",
+							"                \"Current_Address\": {\r",
+							"                  \"type\": \"null\"\r",
+							"                },\r",
+							"                \"stId\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"Permanent_Address\",\r",
+							"                \"Current_Address\",\r",
+							"                \"stId\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"first_name\",\r",
+							"        \"middle_name\",\r",
+							"        \"last_name\",\r",
+							"        \"date_of_birth\",\r",
+							"        \"TechnicalDetails\",\r",
+							"        \"Address\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"status\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"json schema test\", ()=>{\r",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/FinalStudentDetails/{{env_stu_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"FinalStudentDetails",
+						"{{env_stu_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "middleName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "dateOfBirth",
+			"value": ""
+		},
+		{
+			"key": "houseNumber",
+			"value": ""
+		},
+		{
+			"key": "city",
+			"value": ""
+		},
+		{
+			"key": "state",
+			"value": ""
+		},
+		{
+			"key": "country",
+			"value": ""
+		},
+		{
+			"key": "languageOne",
+			"value": ""
+		},
+		{
+			"key": "languageTwo",
+			"value": ""
+		},
+		{
+			"key": "yearOfExps",
+			"value": ""
+		},
+		{
+			"key": "mobileOne",
+			"value": ""
+		},
+		{
+			"key": "mobileTwo",
+			"value": ""
+		},
+		{
+			"key": "stdCodeOne",
+			"value": ""
+		},
+		{
+			"key": "stdCodeTwo",
+			"value": ""
+		}
+	]
+}
