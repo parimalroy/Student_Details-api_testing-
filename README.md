@@ -25,6 +25,9 @@ b) body : json format
 
 ![2](https://user-images.githubusercontent.com/20767815/230136181-f8af12b1-9afe-4a00-9e19-58e20289a554.png)
 
+c)Assertions: Test script for status code and set enviroment/collection variable.
+
+![3](https://user-images.githubusercontent.com/20767815/230138058-1431787c-c1fe-470d-8c4d-ba9fb0716920.png)
 
 #Newnam Report (Newman_Report.html) file
 
