@@ -14,6 +14,22 @@ c) Response body
 
 ![3](https://user-images.githubusercontent.com/20767815/230131887-f2059e0f-aa7f-4ae5-bf46-6590522289d0.png)
 
+#Create Student
+=>Method : Post, StatusCode:201
+
+a) Pre-request script: Create some dynamic variable and store collection/enviorment variable.
+
+![1](https://user-images.githubusercontent.com/20767815/230135593-2c34d387-2edf-4216-861c-9c3371afcce9.png)
+
+b) body : json format
+
+![2](https://user-images.githubusercontent.com/20767815/230136181-f8af12b1-9afe-4a00-9e19-58e20289a554.png)
+
+c) Assertions: Test script for status code and id set as a enviorment variable.
+
+![3](https://user-images.githubusercontent.com/20767815/230136835-4124f2eb-7c0c-4378-b5f5-8052e61eceb6.png)
+
+
 #Newnam Report (Newman_Report.html) file
 
 ![new-1](https://user-images.githubusercontent.com/20767815/230013438-0227aa40-8565-43f9-8b06-9362a4ec63b8.png)
