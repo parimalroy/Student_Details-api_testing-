@@ -31,6 +31,33 @@ c)Assertions: Test script for status code and set enviroment/collection variable
 
 ![3](https://user-images.githubusercontent.com/20767815/230138058-1431787c-c1fe-470d-8c4d-ba9fb0716920.png)
 
+<h3>Get Specific Student </h3>
+<b>=>Method : Get, StatusCode:200 </b>
+
+a)Assertions: Test script for status, field and data type validation.
+
+![1](https://user-images.githubusercontent.com/20767815/230759723-f40b1b6a-d7ac-4107-889d-fce52ac27c6f.png)
+
+b) body: json format 
+
+![2](https://user-images.githubusercontent.com/20767815/230759770-15745e9a-748b-414f-8516-5c710a80fe2a.png)
+
+<h3>Create Technical Skills </h3>
+<b>=>Method : Post, StatusCode:200 </b>
+
+a)Pre-Requested Scripts: Create some random variable
+
+![1](https://user-images.githubusercontent.com/20767815/230760043-26fb8690-cdac-4075-b3ea-8cccb31ae27d.png)
+
+b)Assertions: Test script for status code validation.
+
+![2](https://user-images.githubusercontent.com/20767815/230760071-a6b86714-125a-4449-9429-5b92a961bfb9.png)
+
+
+c) body: json format
+
+![3](https://user-images.githubusercontent.com/20767815/230760102-1fa7f021-8b14-4078-9e99-1122410e9d85.png)
+
 <h3>#Newnam Report (Newman_Report.html) file </h3>
 
 ![new-1](https://user-images.githubusercontent.com/20767815/230013438-0227aa40-8565-43f9-8b06-9362a4ec63b8.png)
